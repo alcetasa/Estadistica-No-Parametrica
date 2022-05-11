@@ -1,0 +1,76 @@
+---
+title: "Pruebas para una Muestra"
+author: "Alvaro Cesar Tauma Salvador"
+date: '2022-05-03'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Estadistica no parametrica 
+no intersa como se distribuye los datos 
+
+```{r}
+library("readxl")
+Caso<- read_excel("Caso 1.xlsx")
+head(caso,10)
+```
+```{r}
+sum(Caso$Concurrencia>5) #OI
+tabla <- c(19,31)#50-19
+barplot(tabla,col=4)
+```
+```{r}
+binom.test(19,50,0.4,"g")
+
+#t diferente
+#g grater >
+#l less <
+
+#pv > alfa : NRHO
+
+```
+```{r}
+binom.test(19,50,conf.level = 0.97)
+```
+
+Pruebas de bondad de ajuste sirve para verificar si los datos se ajustan a una
+cierta distribucion
+se basa 
+
+```{r}
+plot.ecdf(Caso$Monto,col=3)
+
+```
+```{r}
+plot.ecdf(Caso$Monto,col=3)
+hist(Caso$Monto,col=2)
+library(vioplot)
+vioplot(Caso$Monto,col=5,horizontal=T)
+
+```
+```{r}
+ks.test(Caso$Monto,"punif",min(Caso$Monto),max(Caso$Monto))
+
+```
+```{r}
+rela<-c(2,3,4,1)
+prob<-rela/sum(rela)
+chisq.test(tabla2,p=prob)
+res2<-chisq.test(tabla2,p=rela,rescale.p = T)
+res2$expected
+
+library(RVAideMemoire)
+multinomial.test(as.vector(tabla2),prob)
+
+```
+
+```{r}
+library(goftest)
+set.seed(30)
+goftest::ad.test(Caso$Monto,"punif",min(Caso$Monto),max(Caso$Monto),
+                 estimated=T)
+
+```

@@ -1,0 +1,185 @@
+---
+title: "1 CONCEPTOS PRELIMINARES"
+author: "Alvaro Cesar Tauma Salvador"
+date: '2022-04-30'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#1 Introduccion 
+
+Jacob Wolfowitz,en el año 1942,el primero en utilizar el termino no parametrica para 
+diferenciar las situaciones 
+
+Metodo Parametricos :Un grupo de metodos estadisticos que requieren el cumplimiento de
+ciertos supuestos y otro grupo que no lo requiere
+
+La teoria  clasica  de estadistica muchas veces parte de que la variable de estudio tiene un comportamiento funcional conocido (Ejemplo: La variable tiene un comportamiento normal,unifome,exponecial etc) estadistica clasica o estadistica parametrica (basada en parametros)
+
+La estadistica no parametrica no requiere de el cumplimiento de esos supuestos.
+
+Si tengo un conjunto de datos y cumplen con los supuestos (Puedo utilizar ambos metodos aunque en este caso los metodos no parametricos se muestran que son menos potentes)
+
+
+
+# 2. Definiciones  
+
+## a) Función de distribución. Función de Densidad.
+
+### Funcion de densidad o Función de probabilidad  
+
+La funcion de densidad f(x) describe la probabilidad relativa según la cual dicha variable 
+aleatoria tomará determinado valor. 
+
+variable aleatoria: Función que transforma un espacio muestral en numeros 
+
+
+```{r}
+x<-seq(-4,4,0.1) #secuencia -4 a 4 con espaciamiento de 0.1
+y2<-dnorm(x)# la probabilidad puntual 
+sum(y2)#suma casi 1  
+plot(x,y2,type="l", col="red",ylab="") # Grafica Función de probabilidad o funcion de densidad
+```
+
+
+
+### Funcion de distribucion acumulada 
+
+
+La funcion de distribucion acumulada F(X) es la probabilidad de que la  variable aleatoria X tome un valor menor o igual
+
+```{r}
+y1<-pnorm(x)# probabilidad de que la variable aleatoria X tome un valor menor o igual que x  
+plot(x,y1,type="l", col="blue",ylab="")
+
+```
+```{r}
+plot(x,y1,type="l",col="blue",ylab="")
+points(x,y2,type="l", col="red",ylab="")
+```
+
+
+```{r}
+#otra forma
+plot(x,y1,type="l", col="blue",ylab="")
+lines(x,y2,type="l",col="red",ylab="")
+```
+
+
+
+```{r}
+pnorm(0.975)
+```
+
+## e) Intervalos de confianza 
+
+Es un intervalo del $(1-\alpha)\%$ (nivel de confianza)q que indica que entre todos los intervalos de este tipo el $(1-\alpha)\%$ contiene a la media poblacional y el $\alpha\%$ no.
+
+Una prueba de hipotesis estadistica es un procedimiento para decidir entre dos hipotesis llamadas hipotesis nula (H0) e hipotesis alterna (H1)
+
+**Porque es importante un prueba de hipotesis?**
+
+**Porque podemos definir el comportamiento de un parametro si es mayo menor ha cierto valor hipotetico.**
+
+Haciendo comparaciones entre el valor calculado y el valor critico dependiendo si la prueba es unilateral a la izq,derecha o bilateral y el otro criterio utilizado es el Pvalor si es pequeña rechaza H0.
+
+Pvalor es la probabilidad que la prueba estadistica es igual o mas extrema que el valor observado bajo la hipotesis Nula (H0)
+
+## f) Metodos parametricos vs Metodos No parametricos 
+
+**Métodos No paramétricos** requieren de un mínimo número de supuestos sobre la forma de la distribucion de la población.
+
+En constraste **Métodos paramétricos** requieren que la forma de la distribución de la población sea  completamente especificada a excepción de sus parámetros
+
+
+(Supuestos que deben cumplir ambos metodos :Es el **supuesto de aleatoriedad**  deben cumplir tanto los procedimientos parametricos como los no paramatricos)
+
+Cual es mejor ?
+
+Para poder utilizar los procedimientos parametricos se deben cumplir los supuestos solo así se podre continuar con este procedimiento sino se cumplieran algunos de estos supuestos sobre todo a la distribución de los datos se debe utlizar un metodo no parametrico
+
+
+## g) Potencia de prueba
+
+Para determinar que metodo es mejor hay que evaluar la potencia de prueba para identificar cual prueba es mas poderosa.
+
+**Es la probabilidad de rechazar H0 cuando esta es falsa**.
+
+**Métodos de simulación**
+
+Se pueden  aplicar metodos de simulación para estimar la potencia de la prueba.
+Generar numeros pseudoaleatorios para que se cumpla lo que dice H1 y en base de esos resultados evaluar si la prueba reconoce exactamente si es la distribución. 
+
+NOTA:Tener en cuenta la distribución de los datos generados aleatroriamente.
+
+
+Para ilustrar esto, suponga que se quiere estimar la potencia de prueba la potencia de prueba
+para la media $\mu$ de una población con H0:$\mu=10$,entonces se puede generar con la computadora una muestra aleatoria de una distribución normal con **media= 13** y **varianza=1** y aplicar la prueba con un nivel de significación $\alpha$ especifico.Si la hipotesis es rechazada, se puede denominar un exito.Se repite este procedimiento r
+
+
+
+## f) Eficiencia de Pitman 
+
+(Es un concepto complementario a Potencia)
+
+La idea de eficiencia está relacionada cuando dos pruebas estadística son de interés si la potencia es como una medida de exactitud, pero las pruebas pueden ser comparadas bajo condiciones equivalentes (como si ambos estimadores fueran insesgados) y hay muchas variables en las hipotesis que probar.La forma más común de comparar dos pruebas es hacer a todos los factores equivalentes a excepción del tamaño de muestra
+
+A que se refiere 
+Tu puedes tenes una prueba A y una prueba B que tienen el mismo objetivo.Pero como se identifica que la prueba A es mas eficiente .Por ejemplo Para poder demostrar que la prueba A es mas eficiente solo necesito una muestra de 80 datos mientras que para demostrar lo mismo en la Prueba B requiero 120 datos.
+
+La eficiencia de Pitman se da en base al tamaño de muestra .Cuanto de tamaño de muestra se requiere adicionalmente para que una prueba sea tan buena de la otra prueba.
+
+Algunas pruebas para que sean buenas necesitan mucho tamaño de muestra.
+
+
+
+## g) Corrección por continuidad
+
+En algunos casos una simple aproximación de la hipótesis nula(H0) es más exacta para aplicaciones prácticas con tamaños de muestras moderados. Cuando las distribuciones asintóticas son continuas (como la normal o la chi cuadrado) la aproximación puede ser mejorada introduciendo un factor de corrección por continuidad.
+
+A medida que el tamaño de muestra **aumenta la aproximación** es mejor 
+A las expresiones matematica se le añade cierto termino(Terminos de correción por continuidad) la aproximación es mejor.
+
+El R por defecto esos terminos de correccion ya se aplican los terminos de correcion.
+
+
+
+## h) Tamaño de efecto
+
+En algunos casos una simple aproximación de la hipótesis nula es más exacta para aplicaciones prácticas con tamaños de muestras moderados. Cuando las distribuciones asintóticas son continuas (como la normal o la chi cuadrado) la aproximación puede ser mejorada introduciendo un factor de corrección por continuidad.
+
+
+#2. Pautas para la elección de la adecuada Prueba No Paramétrica
+
+En las próximas unidades se discutirán diversas pruebas no paramétricas.
+Al finalizar el curso la idea es saber diagnosticar adecuadamente cuál es la
+prueba no paramétrica que se debe utilizar dada cierta inquietud de un
+investigador, esto debido a que se debe considerar a los programas
+estadísticos solo como herramientas que nos pueden facilitar los cálculos.
+A continuación, se presentan algunas pautas que pueden ayudar a la
+elección de una prueba estadística:
+
+* Tener claro el objetivo de la investigación.
+
+* Determinar si para cumplir los objetivos se requiere de una muestra,
+una muestra relacionada, dos muestras independientes, una muestra
+k relacionada o k muestras independientes.
+
+* Definir adecuadamente las variables a utilizar y determinar de qué
+tipo son (cualitativas o cuantitativas).
+
+* Verificar si la prueba elegida requiere cumplir ciertos supuestos y si estos
+no se cumplen, buscar una prueba alternativa
+
+
+
+
+
+
+
+
+
+
