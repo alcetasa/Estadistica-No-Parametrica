@@ -1,0 +1,30 @@
+
+```{r}
+xbar1 <- 35
+xbar2 <- mean(tmuerte_nuevoraticida)
+n1 <- 30
+n2 <- 30
+(var1 <- 3^2)
+(var2 <- var(tmuerte_nuevoraticida))
+
+Hnumerador <- ((var1/n1)+(var2/n2))^2
+Hdenominado <- ((var1/n1)^2/(n1-1))+((var2/n2)^2/(n2-1))
+H <- Hnumerador/Hdenominado;H
+
+
+tc=(xbar2-xbar1)-0/sqrt((var1/n1)+(var2/n2))
+tc
+
+```
+
+
+
+```{r}
+
+chi2q <- ((8-1)*0.224^2)/(0.022);chi2q
+qchisq(1-0.09,8-1)
+
+#Region de rechazo H0 a la derecha
+chi2q<qchisq(1-0.09,8-1)
+chi2q>qchisq(1-0.09,8-1) #cae en la zona  rechazo H0
+```

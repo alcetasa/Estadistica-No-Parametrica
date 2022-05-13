@@ -1,0 +1,156 @@
+#Lectura de datos
+tele<-read.delim("clipboard")
+#Creación de subconjunto
+fem<-subset(tele,Género=="Femenino")
+
+
+############################################
+#    PRUEBAS PARA MUESTRAS PAREADAS        #
+############################################
+
+#-------------------------------------#
+#PARA EVALUAR UNA VARIABLE DICOTÓMICA
+#-------------------------------------#
+
+#Prueba de McNemar
+library(exact2x2)
+mcnemar.exact(fem$TrámitesA, fem$TrámitesD)
+
+#--------------------------------------#
+#PARA EVALUAR UN PARÁMETRO DE LOCACIÓN
+#--------------------------------------#
+
+#Prueba de Signos
+library(BSDA)
+SIGN.test(mas$WebD, mas$WebA, mu=0, alternative="g")
+
+#-Intervalo de confianza
+SIGN.test(mas$WebD, mas$WebA, alternative="t", conf.level = 0.96)
+
+
+#Prueba de Wilcoxon
+
+#Primero realizamos prueba de MGG
+library(lawstat)
+symmetry.test(mas$WebA-mas$WebD, boot=F)
+
+#Si se cumpl el supuesto:
+
+library(exactRankTests)
+wilcox.exact(mas$WebD, mas$WebA, mu=0, alternative="g", paired="T")
+
+#-Intervalo de confianza
+wilcox.exact(mas$WebD, mas$WebA, alternative="t",conf.int=T ,paired=T, conf.level=0.96)
+
+#--------------------------------------#
+#PARA EVALUAR UN PARÁMETRO DE ESCALA
+#--------------------------------------#
+
+#Prueba de Grambsch
+
+library(PairedData)
+#Primero se prueba simetría
+symmetry.test(mas$WebA-mas$WebD, boot=F)
+
+#Si existe simetría:
+grambsch.Var.test(mas$WebA, mas$WebD,alternative="g")
+
+
+
+################################################
+#    PRUEBAS PARA 2 MUESTRAS INDEPENDIENTES    #
+################################################
+
+#--------------------------------------#
+#PARA COMPARAR LA DISTRIBUCIÓN
+#--------------------------------------#
+
+#Prueba de Kolmogorov-Smirnov
+
+#Análisis gráfico
+plot.ecdf(fem$Ingresos, col=4)
+plot.ecdf(mas$Ingresos, col=6, add=T )
+library(vioplot)
+vioplot(fem$Ingresos, mas$Ingresos,col=3, horizontal=T)
+
+
+ks.test(mas$Ingresos, fem$Ingresos)
+
+#Prueba de Wald-Wolfowitz
+library(DescTools)
+RunsTest(mas$WebA, mas$WebD, alternative="two.sided")
+#help(RunsTest)
+
+
+#--------------------------------------#
+#PARA EVALUAR UN PARÁMETRO DE LOCACIÓN
+#--------------------------------------#
+
+#a) Prueba de forma:
+ks.test(mas$Familiaridad, fem$Familiaridad)
+#Sí se cumple: Mann-Whitney
+
+
+#Prueba de Mann-Whitney
+library(exactRankTests)
+wilcox.exact(fem$Ingresos, mas$Ingresos, alternative = "g", mu=10, paired=F)
+
+#-Intervalo de confianza para la diferencia de medianas
+wilcox.exact(fem$Ingresos, mas$Ingresos, alternative = "t", paired=F, conf.level = 0.96)
+
+
+#Si no se cumple el supuesto de forma: 
+#Se prueba asimetría para ambas muestras:
+symmetry.test(mas$Familiaridad, boot=F)
+symmetry.test(fem$Familiaridad, boot=F)
+#Si ambos son simétricos: Fligner-Policello
+
+
+#Prueba de Fligner-Policello
+library(RVAideMemoire)
+help(fp.test)
+#delta = "valor hipotético"
+fp.test(mas$Familiaridad, fem$Familiaridad,  alternative = "two.sided")
+
+#--------------------------------------#
+#PARA EVALUAR UN PARÁMETRO DE ESCALA
+#--------------------------------------#
+
+#Prueba de Conover
+boxplot(tele$Horas~tele$Género)
+library(coin)
+conover_test(tele$Horas~as.factor(tele$Género))
+
+#Prueba de Reacciones Extremas de Moses
+library(DescTools)
+MosesTest(fem$Horas,mas$Horas)
+
+#Prueba de Mood
+#Se prueba  Kolmogorov-Smirnov:
+ks.test(mas$Familiaridad, fem$Familiaridad)
+#Si se cumple H0, se prueba Mann-Whitney:
+library(exactRankTests)
+wilcox.exact(fem$Ingresos, mas$Ingresos, alternative = "t", mu=0, paired=F)
+#Se debe aceptar H0, para usar Mood:
+
+mood.test(fem$Horas,mas$Horas, alternative="t")
+
+
+#Prueba de Ansari-Bradley
+library(exactRankTests)
+ansari.exact(mas$Ingresos,fem$Ingresos, alternative = "g")
+
+
+#Prueba de Siegel Tukey
+library(PMCMRplus)
+siegelTukeyTest(mas$Ingresos,fem$Ingresos,alternative="g")
+
+#-----------------------------------------------#
+#PARA EVALUAR UN PARÁMETRO DE ESCALA Y POSICIÓN
+#-----------------------------------------------#
+help(pLepage)
+library(NSM3)
+#Método aproximado: Usar este! 
+pLepage(mas$Ingresos,fem$Ingresos, method="Asymptotic")
+
+

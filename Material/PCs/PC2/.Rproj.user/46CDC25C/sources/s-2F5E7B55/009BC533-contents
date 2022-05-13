@@ -1,0 +1,41 @@
+library(readxl)
+datos <- read_excel("PC2.xlsx")
+
+
+#      PREGUNTA 2
+
+#Creación del subconjunto
+APV<-subset(datos, empresa=="APV")
+
+#Primero realizamos prueba de MGG
+library(lawstat)
+symmetry.test(APV$tiempos-APV$tiempoj, boot=F)
+
+#Si se cumple el supuesto, aplicamos Wilcoxon:
+
+library(exactRankTests)
+wilcox.exact(APV$tiempos, APV$tiempoj, mu=16, alternative="g", paired="T")
+
+#Intervalo de confianza
+wilcox.exact(APV$tiempos, APV$tiempoj, alternative="t",conf.int=T ,paired=T, conf.level=0.94)
+
+
+
+#      PREGUNTA 4
+
+
+#Creación de subconjuntos
+HVO<-subset(datos, empresa=="HVO")
+DP<-subset(datos, empresa=="DP")
+
+#Se prueba  Kolmogorov-Smirnov:
+ks.test(HVO$tiempos,DP$tiempos)
+
+#Sí se cumple H0, se prueba Mann-Whitney:
+library(exactRankTests)
+wilcox.exact(HVO$tiempos,DP$tiempos, alternative = "t", paired=F)
+
+#Se cumplen ambos supuestos, aplicamos Ansari-Bradley
+library(exactRankTests)
+ansari.exact(HVO$tiempos,DP$tiempos, alternative = "t")
+

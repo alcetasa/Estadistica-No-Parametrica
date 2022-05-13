@@ -2,11 +2,11 @@
 ################
 #Prueba Binomial: Pregunta 1
 ################
-#Cálculo de la cantidad de clientes frecuentes
-sum(Caso$Concurrencia>5)
+#C?lculo de la cantidad de clientes frecuentes
+sum(Caso$Concurrencia>5) #cumplen con la condicion
 tabla<-c(19,31)
 barplot(tabla,col=4)
-#Prueba de hipótesis
+#Prueba de hip?tesis
 binom.test(19,50,0.4,"g")
 #Intervalo de confianza
 binom.test(19,50,conf.level = 0.97)
@@ -26,7 +26,7 @@ ks.test(Caso$Monto,"punif",min(Caso$Monto),max(Caso$Monto))
 #Prueba de Ajuste a la Multinomial: Pregunta 3
 ##################################
 
-tabla2<-table(Caso$Menú)
+tabla2<-table(Caso$Men?)
 barplot(tabla2,col=5)
 
 
@@ -40,7 +40,7 @@ library(RVAideMemoire)
 multinomial.test(as.vector(tabla2),prob)
 
 #################################################################
-#Prueba Chi Cuadrado de Pearson-Ajuste a una distribución teórica: Pregunta 5
+#Prueba Chi Cuadrado de Pearson-Ajuste a una distribuci?n te?rica: Pregunta 5
 #################################################################
 tabla3<-table(Caso$Postres)
 plot(tabla3,col=4)
@@ -78,7 +78,7 @@ shapiro.test(Caso$Monto)
 
 
 #####################
-#Prueba de D´Agostino
+#Prueba de D?Agostino
 #####################
 
 library(fBasics)
@@ -99,7 +99,7 @@ jarqueberaTest(Caso$Monto)
 library(nortest)
 lillie.test(Caso$Monto)
 
-#Comparación de pruebas de normalidad: Potencia de prueba
+#Comparaci?n de pruebas de normalidad: Potencia de prueba
 
 set.seed(20)
 r<-1000
@@ -135,24 +135,24 @@ shadeDist(qnorm(c(0.03/2,1-0.03/2)),"dnorm")
 
 
 ###############################
-#Prueba de Simetría: Pregunta 7
+#Prueba de Simetr?a: Pregunta 7
 ################################
-plot(table(Caso$Satisfacción),col=4)
+plot(table(Caso$Satisfacci?n),col=4)
 library(lawstat)
-symmetry.test(Caso$Satisfacción,boot=F,option="CM")
-symmetry.test(Caso$Satisfacción,boot=F,option="M")
-symmetry.test(Caso$Satisfacción,boot=F,option="MGG")
+symmetry.test(Caso$Satisfacci?n,boot=F,option="CM")
+symmetry.test(Caso$Satisfacci?n,boot=F,option="M")
+symmetry.test(Caso$Satisfacci?n,boot=F,option="MGG")
 
 ########################################
 #Prueba de Signos y Wilcoxon: Pregunta 7
 ########################################
 library(exactRankTests)
-wilcox.exact(Caso$Satisfacción,mu=7,alternative="l")
+wilcox.exact(Caso$Satisfacci?n,mu=7,alternative="l")
 
 #Intervalo de confianza
-wilcox.exact(Caso$Satisfacción,conf.int=TRUE,conf.level=0.97)
+wilcox.exact(Caso$Satisfacci?n,conf.int=TRUE,conf.level=0.97)
 
-#Con fines prácticos
+#Con fines pr?cticos
 library(BSDA)
-SIGN.test(Caso$Satisfacción,md=7,alternative="l")
-SIGN.test(Caso$Satisfacción,conf.level = 0.97)
+SIGN.test(Caso$Satisfacci?n,md=7,alternative="l")
+SIGN.test(Caso$Satisfacci?n,conf.level = 0.97)

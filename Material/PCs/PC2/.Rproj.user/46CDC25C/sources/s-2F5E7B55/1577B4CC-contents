@@ -1,0 +1,75 @@
+############################################3
+# PRACTICA CALIFICADA 2
+############################################
+
+datos<- read.delim("clipboard")
+Dp<- subset(datos,empresa=="DP")
+Nex<- subset(datos,empresa=="Nex")
+
+#PREGUNTA 1
+#---------------------------------
+
+# PRUEBA DE KOLMOGOROV-SMIRNOV
+
+plot.ecdf(Dp$tiempov,col=4)
+plot.ecdf(Nex$tiempov,col=3,add=T)
+ks.test(Dp$tiempov,Nex$tiempov)
+
+# PRUEBA PARA EVALUAR LAS MEDIANAS
+#supuesto de medianas 
+library(exactRankTests)
+wilcox.exact(Dp$tiempov,Nex$tiempov,paired=F)
+
+# PRUEBA DE ANSARI-BRADLEY
+
+library(exactRankTests)
+ansari.exact(Dp$tiempov,Nex$tiempov,alternative="g")
+
+#PREGUNTA 2
+#---------------------------------
+Nex<- subset(datos,empresa=="Nex")
+library(lawstat)
+symmetry.test(Nex$tiempov-Nex$tiempoj , boot=F)
+
+#2do si es simetrica se usa wilcoxon
+library(exactRankTests)
+wilcox.exact(Nex$tiempov,Nex$tiempoj, mu = 15, alternative = "l", paired = T)
+
+#3er intervalos de confianza
+wilcox.exact(Nex$tiempov,Nex$tiempoj, alternative = "t", paired = T, conf.int = T, conf.level = 0.94)
+
+
+
+#PREGUNTA 3
+#---------------------------------
+HVO<-subset(datos,empresa=="HVO")
+library(exact2x2)
+mcnemar.exact(HVO$gusta1,HVO$gusta2)
+
+#PREGUNTA 4
+#---------------------------------
+APV<-subset(datos,empresa=="APV")
+
+#1ero evaluamos forma
+ks.test(cla$Deudic,pla$Deudic)
+library(DescTools)
+RunsTest(APV$tiempod,Dp$tiempod)
+
+#2do evaluamos locación
+wilcox.exact(APV$tiempod,Dp$tiempod,alternative="t",
+             paired=F)
+
+
+
+#PREGUNTA 5
+#---------------------------------
+
+# PRUEBA PARA EVALUAR SIMETRIA 
+library(lawstat)
+symmetry.test(Dp$tiempos - Dp$tiempov , boot=F)
+#si hay simetria (P-VALUE>alfa)
+
+# PRUEBA DE GRAMBSCH
+
+library(PairedData)
+grambsch.Var.test(Dp$tiempos,Dp$tiempov,alternative="t")

@@ -2,9 +2,6 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 getwd()
 
 
-
-
-
 tabla2<-c(14,22,11,11)
 sum(tabla2)
 rela<-c(1,2,1,3)

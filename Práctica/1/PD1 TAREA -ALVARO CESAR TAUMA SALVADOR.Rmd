@@ -1,0 +1,203 @@
+---
+title: "NO PARAMETRICA -TAREA"
+author: "Alvaro Cesar Tauma Salvador"
+date: '2022-05-03'
+output: 
+  html_document: 
+    toc: yes
+    number_sections: no
+    toc_float:
+      smooth_scroll: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Tarea PD 1
+
+## Pregunta 6
+
+* En cierta ciudad la plaga de ratas se ha incrementado. La municipalidad de la ciudad contrata a una empresa que fabrica un nuevo veneno para ratas, afirmando que su efectividad es mucho mejor a cualquier raticida actual. Se sabe que el tiempo para que el veneno tradicional “Racumín” mate a una rata sigue una distribución normal con media 35 min. y una desviación estándar de 3 min. La nueva empresa captura aleatoriamente 30 ratas de la ciudad y le aplica el nuevo raticida, el tiempo de muerte de las 30 ratas en minutos es el siguiente: 25, 27, 32, 37, 33, 36, 35, 35, 30, 31, 35, 33, 37, 33, 20, 29, 32, 33, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 35.
+
+$\mu=35 min$= 
+
+$\sigma^2= 3^2 min$
+
+$n=30$
+
+
+$E(\bar{x})=\mu_{\bar{x}}=35 min$}
+
+$Var(\bar{x})=\sigma_{\bar{x}}^2=\frac{\sigma^2}{n}=\frac{3^2}{30}=\frac{9}{30}$
+
+
+### 6a	
+Estimar un intervalo al 97% de confianza para el tiempo promedio de muerte  al utilizar el nuevo veneno para ratas.
+
+
+$\mu=32 min$
+
+$\sigma^2= 3.930429^2 min$
+
+$n=30$
+
+
+$E(\bar{x})=\mu_{\bar{x}}=32 min$}
+
+$Var(\bar{x})=\sigma_{\bar{x}}^2=\frac{\sigma^2}{n}=\frac{3.930429^2}{30}$
+
+$1-alpha=\text{nivel de confianza}$
+
+
+
+```{r}
+tmuerte_nuevoraticida <- c(25, 27, 32, 37, 33, 36, 35, 35, 30, 31, 35, 33, 37, 33, 20, 29, 32, 33, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 35)
+(n2 <- length(tmuerte_nuevoraticida))
+(xbar2 <- mean(tmuerte_nuevoraticida))#media muestral
+(s2 <- var(tmuerte_nuevoraticida))
+#var muestral
+(vybar2<-(s2/n2))#varianza de la media muestral (es una medida del grado de dispercionde los datos con respecto  a la media)
+(eeybar2<-sqrt(vybar2))#error estandar la media muestral en unidades de la variable 
+(cvybar2<-eeybar2*100/xbar2)#coeficiente de variabilidad)
+```
+
+```{r}
+LI1<-xbar2-qnorm(1-0.03/2)*eeybar2 # z: cuando la muestra es grande 
+LS1<-xbar2+qnorm(1-0.03/2)*eeybar2
+c(LI1,LS1)
+```
+
+
+### 6b
+
+¿Hay fuertes evidencias para decir que el nuevo raticida mejora el tiempo de muerte con respecto al raticida tradicional? Considere un nivel de significación del 7%. Calcule el p-valor. 
+
+
+
+H0:$\mu_{2}-\mu_{1}\leq 0$
+
+H1:$\mu_{2}-\mu_{1}>0$ greather
+
+
+```{r}
+x1 <- rnorm(30,mean = 32, sd=3)
+x2 <- c(25, 27, 32, 37, 33, 36, 35, 35, 30, 31, 35, 33, 37, 33, 20, 29, 32, 33, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 35) 
+ 
+t.test(x2 , x1 , alternative=c("g") , conf.level=0.93,paired = T)
+
+```
+PVALOR =0.4573 ,No se Rechaza H0
+
+
+**Conclusión**
+
+A un nivel de significancia de 7% .No existe evidencia estadistica suficiente para afirmar que lque el nuevo raticida mejora el tiempo de muerte con respecto al raticida tradicional.
+
+
+### 6c
+¿Hay fuertes evidencias para decir que el nuevo raticida empeora el tiempo de muerte con respecto al raticida tradicional? Considere un nivel de significación del 5%.  Calcule el p-valor. 
+
+
+H0:$\mu_{2}-\mu_{1}\geq 0$
+
+H1:$\mu_{2}-\mu_{1}<0$ lowe
+
+```{r}
+t.test(x2 , x1 , alternative=c("l") , conf.level=0.95,paired = T)
+```
+
+PVALOR =0.5427 ,No se Rechaza H0
+
+Concluimos:A un nivel de significancia de 7% .No existe evidencia estadistica suficiente para afirmar que  el nuevo raticida empeora el tiempo de muerte con respecto al raticida tradicional.
+
+
+### 6d
+
+¿Hay fuertes evidencias para decir que el nuevo raticida permite tener una varianza del tiempo de muerte menor a 2.5? Considere un nivel de significación del 9%.  Calcule el p-valor. 
+
+
+**Formular Hipotesis**
+
+$Ho:\sigma_{2}^2=2.5$
+$H1:\sigma_{2}^2<2.5$
+
+**nivel de significación.** 
+
+$\alpha=0.09$
+
+**Prueba estadistica** 
+```{r}
+s2
+osigma2 <- 2.5
+n2
+chi2q <- ((n2-1)*s2)/(osigma2);chi2q
+
+```
+```{r}
+qchisq(1-0.09,n2-1)
+```
+**Region de rechazo H0 a la izquierda**
+
+```{r}
+chi2q<qchisq(1-0.09,n2-1)#cae en la zona  rechazo H0
+chi2q>qchisq(1-0.09,n2-1) 
+```
+
+**Conclusión**
+
+A un nivel de significancia de 9% .No existe evidencia estadistica suficiente para afirmar que  el nuevo raticida permite tener una varianza del tiempo de muerte menor a 2.5.
+
+
+
+### 6e
+
+¿Hay fuertes evidencias para decir que el nuevo raticida permite tener una varianza del tiempo de muerte diferente a 2.5? Considere un nivel de significación del 8%.  Calcule el p-valor. 
+
+**Formular Hipotesis**
+
+$Ho:\sigma_{2}^2=2.5$
+$H1:\sigma_{2}^2\neq 2.5$
+
+**nivel de significación.**
+
+$\alpha=0.08$
+
+
+**Prueba estadistica** 
+```{r}
+s2
+osigma2 <- 2.5
+n2
+chi2q <- ((n2-1)*s2)/(osigma2);chi2q
+```
+```{r}
+qchisq(0.09,n2-1)
+qchisq(1-0.09,n2-1)
+```
+**Region de rechazo esta en ambos lados **
+
+```{r}
+#cae en la zona  rechazo H0
+```
+
+**Conclusión**
+
+A un nivel de significancia de 9% .Existe evidencia estadistica suficiente para afirmar que  el que el nuevo raticida permite tener una varianza del tiempo de muerte diferente a 2.5.
+
+## Pregunta 9
+
+* En una muestra de 65 individuos las puntuaciones en una escala psicológica de extroversión tienen una media de 32,7 puntos y una desviación típica de 12,64.
+
+
+### 9b
+A un nivel de confianza del 92%, ¿cuál sería el máximo error que podríamos cometer al tomar como media de la población el valor obtenido en la estimación puntual?
+
+```{r}
+eeybar3 <- qnorm(1-0.08/2)*(12.64/sqrt(65))
+eeybar3
+```
+
+**RPTA :**
+Máximo error que se puede cometer, con un nivel de confianza al 92% es: 2.744724

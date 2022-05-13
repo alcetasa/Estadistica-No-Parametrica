@@ -1,0 +1,459 @@
+---
+title: "Caso 1"
+author: "Alvaro Cesar Tauma Salvador"
+date: '2022-05-12'
+output: 
+  html_document: 
+    toc: yes
+    number_sections: yes
+    toc_float:
+      smooth_scroll: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Caso: R&Dgo Restaurant
+
+![](Caso1.png)
+
+Durante muchos años R&Dgo Restaurant ha sido un lugar muy frecuentado por clientes selectos y exigentes. Este año ha enfrentado una fuerte competencia, debido a que muy cerca se ha abierto un nuevo restaurante que está atrayendo a muchos clientes por su variado menú e innovadores presentaciones.
+
+El gerente de R&Dgo Restaurant desea recuperar su posicionamiento y para ello decidió realizar un estudio de mercado que posteriormente le permitirá tomar decisiones en función a los resultados obtenidos. 
+
+Para ayudar a tomar decisiones, el gerente lo ha contratado a Ud. para evaluar las alternativas y diseñar un plan para ganar la preferencia de nuevos clientes. 
+Después de pensarlo cuidadosamente, usted decide que datos debe recolectar, cómo debe organizarlos y qué pruebas utilizará para proporcionar al gerente de R&Dgo Restaurant la información necesaria para la toma de decisiones. 
+
+Para su análisis aplicó una encuesta a una muestra aleatoria de 50 clientes frecuentes de R&Dgo Restaurant, donde se consideró las siguientes variables:
+
+
+*	Género: Género del cliente.
+*	Satisfacción: Grado de satisfacción de los clientes considerado como un puntaje de 1 a 10 con respecto al trato del personal que atiende al cliente.
+*	Concurrencia: Número de veces al mes que un cliente acude al restaurante.
+*	Vehículos: Número de veces al mes que el cliente estaciona su vehículo sin inconvenientes.
+*	Estacionamiento: Opinión sobre los estacionamientos en el restaurante.
+*	Menú: Preferencia sobre 4 tipos de menús.
+*	Recomendación: Respuesta sobre si recomendaría el restaurante a algún amigo o familiar.
+*	Monto: Monto (en soles) gastado en su última visita. 
+*	Postres: Número de postres que podría consumir durante un mes.
+
+
+En función a la encuesta, Ud. debe trabajar con las variables adecuadas, para el desarrollo de las siguientes inquietudes y sus conclusiones serán a un nivel de significación de 0.03: 
+1)	Al gerente le interesa analizar la **proporción de alta fidelidad**, el gerente del R&Dgo Restaurant informa que **la proporción de clientes con alta fidelidad siempre ha sido mayor a 0.4**, (la alta fidelidad del cliente se mide si este acude al restaurante como mínimo 6 veces al mes). ¿Qué puede afirmar sobre la **alta fidelidad de los clientes**? 
+También se desea reportar un intervalo del 97% de confianza para la proporción de clientes con alta fidelidad.
+
+
+## Prueba Binomial
+
+
+**Prueba de hipotesis**
+
+$H0: \pi = 0.4$
+
+$H1: \pi > 0.4$
+
+**Nivel de significación** 
+
+$\alpha=0.03$
+
+
+```{r}
+library("readxl")
+Caso<- read_excel("Caso1.xlsx")
+nrow(Caso)
+
+sum(Caso$Concurrencia>5) #cumplen con la condicion (ALTA FIDELIDAD)
+
+#binom.test(cant.éxitos(de la muestra), #obs. totales, val. hipotético(pi0),"g" )
+
+#tipo de prueba: 
+#"t" : bilateral(H1:pi!=pi0)
+#"l" : unilateral(H1:pi<pi0)
+#"g" : unilateral(H1:pi>pi0)
+
+binom.test(19,50,0.4,"g")
+```
+$PVALOR:0.6644>\alpha -$ 
+
+*No se** Rechaza H0
+
+**Conclusión**
+A un nivel de significación de 0.03, no existe suficiente evidencia estadística para rechazar H0.
+Por lo tanto, no podemos afirmar que la proporción de clientes con alta fidelidad siempre ha sido mayor a 0.4
+
+**Intervalo de confianza**
+
+TIPO DE PRUEBA: Siempre: "t"
+
+```{r}
+binom.test(19,50,0.4,"t",0.97)
+
+```
+
+IC($\pi$) = [0.234 ; 0.543]
+El intervalo que va de 0.247 a 0.528 brinda un 97% de confianza de contener a la proporción de cliente que acuden al restaurante como mínimo 6 veces al mes
+
+
+
+
+
+
+## Prueba para evaluar supuestos Pruebas para determinar la distribución de los datos (Pruebas de Bondad de Ajuste)
+
+
+2) Es importante analizar el comportamiento del consumo de los clientes.
+El gerente afirma que el monto gastado en la última visita **no presenta un comportamiento uniforme**, pero que quizás pueda ser normal; Ud. afirma lo contrario al gerente.
+
+a) Use una prueba de bondad de ajuste.
+a.1 Use una prueba basada en la comparación de la distribución empírica y teórica para verificar la afirmación del gerente. Realice una gráfica adecuada previamente.
+
+### Prueba de Kolmogorov-Smirnov
+```{r}
+#Gráficos opcionales
+library(vioplot)
+par(mfrow=c(2,1))
+boxplot(Caso$Monto,col=4)
+plot(density(Caso$Monto),col=4)
+
+#Gráfico de violín:
+par(mfrow=c(1,1))
+vioplot(Caso$Monto,col=4,horizontal=T)
+#Nota: por las curvas es probable de que los datos no se ajusten a una uniforme
+
+#Gráfica de la dist. acumulada empírica
+plot.ecdf(Caso$Monto,col=3)
+```
+```{r}
+###PRUEBA
+#ks.test(variable,"dist teórica",como estimarías los parámetros en base a esa dist)
+ks.test(Caso$Monto,"punif",min(Caso$Monto), max(Caso$Monto))
+```
+KS = 	0.261
+pvalor=0.002 < $\alpha$ se rechaza H0
+
+
+Conclusión
+
+A un nivel de significación de 0.03, existe suficiente evidencia estadística para
+rechazar H0.
+Por lo tanto, la afirmación del gerente es correcta.
+
+
+
+a.2 Use una prueba que **basa su estadístico en el logaritmo de la distribución acumulada teórica** para verificar la afirmación del gerente. Realice una gráfica adecuada previamente. Anteponga set.seed(30)
+
+
+H0: El monto gastado en la última visita presenta un comportamiento uniforme
+
+H1: El monto gastado en la última visita no presenta un comportamiento uniforme
+
+
+### Prueba de Anderson-Darling: Pregunta 2 a2
+
+```{r}
+###################################
+## Prueba de Anderson-Darling: Pregunta 2 a2
+#######################################
+hist(Caso$Monto)
+```
+```{r}
+library(goftest)
+set.seed(30)
+goftest::ad.test(Caso$Monto,"punif", estimated=T)
+```
+### Otras Pruebas
+
+```{r}
+###################################
+#Prueba de Anderson-Darling: Pregunta 2 a2
+#######################################
+hist(Caso$Monto)
+library(goftest)
+set.seed(30)
+goftest::ad.test(Caso$Monto,"punif", estimated=T)
+
+############################
+#Prueba de Cramer von Mises:
+############################
+goftest::cvm.test(Caso$Monto,"punif", estimated=T)
+
+
+```
+## Pruebas de Normalidad
+
+```{r}
+###################################################################################
+#######################
+#Prueba de Shapiro-Wilk
+#######################
+library(vioplot)
+vioplot(Caso$Monto,col=4,horizontal = T)
+shapiro.test(Caso$Monto)
+
+
+#####################
+#Prueba de D?Agostino
+#####################
+
+library(fBasics)
+dagoTest(Caso$Monto)
+
+
+######################
+#Prueba de Jarque-Bera
+######################
+library(moments)
+jarque.test(Caso$Monto)
+library(fBasics)
+jarqueberaTest(Caso$Monto)
+
+######################
+#Prueba de Lilliefors
+######################
+library(nortest)
+lillie.test(Caso$Monto)
+```
+
+
+b) Use una prueba cuyo estadístico se basa en la asimetría y curtosis para verificar su afirmación. Realice una gráfica adecuada previamente.
+¿Quién tiene razón?
+
+H0: El monto gastado en la última visita presenta un comportamiento normal
+
+H1: El monto gastado en la última visita presenta un comportamiento normal
+
+```{r}
+######################
+#Prueba de Jarque-Bera
+######################
+library(moments)
+jarque.test(Caso$Monto)
+library(fBasics)
+jarqueberaTest(Caso$Monto)
+```
+
+
+Conclusión
+
+A un nivel de significación de 0.03, no existe suficiente evidencia estadística para
+rechazar H0.
+Por lo tanto, la afirmación del gerente no es correcta.
+El estudiante es quien tiene razón.
+
+
+
+## Prueba Chi Cuadrado de Pearson: 
+
+###  Prueba Chi Cuadrado de Pearson: Ajuste a la multinomial
+
+3)	La gerencia quiere determinar si la preferencia por los tipos de menú no está en relación 2:3:4:1
+
+H0: La preferencia por los tipos de menú está en relación 2:3:4:1
+
+H1: La preferencia por los tipos de menú no está en relación 2:3:4:1
+
+```{r}
+#Pvalor aprox
+tabla2<-table(Caso$Menú)
+barplot(tabla2,col=5)
+
+
+rela<-c(2,3,4,1)
+prob<-rela/sum(rela)
+chisq.test(tabla2,p=prob)
+res2<-chisq.test(tabla2,p=rela,rescale.p = T)
+res2$expected
+```
+
+```{r}
+# Pvalor exacto
+library(RVAideMemoire)
+multinomial.test(as.vector(tabla2),prob)
+``` 
+CHI^2 = 15.317 
+
+Conclusión
+A un nivel de significación de 0.03, existe suficiente evidencia estadística para rechazar H0.
+Por lo tanto, podemos afirmar que la preferencia por los tipos de menú no está en relación 2:3:4:1
+
+
+
+4)	La gerencia informa que tradicionalmente hay 4 platos que siempre se han vendido por igual y que son muy requeridos por los clientes. Si hay un plato de mayor preferencia se podría hacer variantes de ese plato. ¿Se deben hacer variantes de un plato?  Adicionalmente en su informe debe elaborar un gráfico adecuado.	
+
+```{r}
+#########################################################
+#Prueba Chi Cuadrado de Pearson: Ajuste a la multinomial#
+#########################################################
+tabla<-table(Caso$Menú)
+prob<-c(1,1,1,1)/4
+
+# Método exacto
+library(RVAideMemoire)
+#Pasar la tabla inicial a vector
+tabla1<-as.vector(tabla)
+multinomial.test(tabla1,prob)
+```
+
+### Prueba Chi Cuadrado de Pearson-Ajuste a una distribuci?n te?rica: Pregunta 5
+
+5)	Una estrategia para captar más clientes es ofrecerles postres gratuitos al finalizar su almuerzo. Pero para no desgastar el paladar de los clientes, **el gerente considera que debe ofrecerse como máximo 5 postres al mes que visite el restaurante**.
+Ud. le propone al gerente determinar la distribución del número de postres que el cliente estaría dispuesto a consumir al mes sabiendo que la probabilidad de que un cliente esté dispuesto a consumir un postre es igual a 0.5.
+
+¿El número de postres que el cliente estaría dispuesto a consumir al mes no se ajusta a una distribución Binomial? Elabore un gráfico adecuado.
+
+
+
+H0: El número de postres que el cliente estaría dispuesto a consumir al mes se ajusta a una distribución Binomial con $\pi$=0.5
+
+H1: El número de postres que el cliente estaría dispuesto a consumir al mes no se ajusta a una distribución Binomial con $\pi$=0.5
+
+```{r}
+#################################################################
+#Prueba Chi Cuadrado de Pearson-Ajuste a una distribuci?n te?rica: Pregunta 5
+#################################################################
+tabla3<-table(Caso$Postres) # frecuencia de consumidores por  cantidad de postre
+plot(tabla3,col=4)
+proba<-dbinom(0:5,5,0.5)
+
+res4<-chisq.test(tabla3,p=proba)
+res4$expected # si tienen valores esperados menores a 5 se agrupan
+
+tabla4<-c(sum(tabla3[1:2]),tabla3[3:4],sum(tabla3[5:6]))
+proba4<-c(sum(proba[1:2]),proba[3:4],sum(proba[5:6]))
+chisq.test(tabla4,p=proba4)
+
+qchisq(0.03,3,lower.tail = F)#alfa
+library(fastGraph)
+shadeDist(qchisq(0.03,3,lower.tail = F),"dchisq",3,lower.tail=F)
+```
+chi^2 = 12.848 cae el la zona de rechazo 
+
+pvalor= 0.004977< alfa se rechaza H0
+
+Conclusión
+A un nivel de significación de 0.03, existe suficiente evidencia estadística para rechazar H0.
+Por lo tanto, podemos afirmar que el número de postres que el cliente estaría dispuesto a consumir al mes no se ajusta a una distribución Binomial.
+
+
+
+Conclusión
+A un nivel de significación de 0.03, existe suficiente evidencia estadística para rechazar H0.
+Por lo tanto, podemos afirmar que el número de postres que el cliente estaría dispuesto a consumir al mes no se ajusta a una distribución Binomial.
+
+
+
+6)	Al analizar la fidelidad de los clientes, usted quiere asegurarse que sus resultados son confiables y representativos, para ello sabe que el tipo de muestreo y la elección aleatoria de sus datos es muy importante. ¿Podría concluir que, con la elección de sus datos, su investigación y resultados sobre R&Dgo Restaurant son confiables y válidos en base al número mediano de veces al mes que un cliente acude al restaurante?	
+
+
+H0: Las observaciones son aleatorias con respecto al número mediano de veces al mes que un cliente acude al restaurante
+
+
+H1: Las observaciones no son aleatorias con respecto al número mediano de veces al mes que un cliente acude al restaurante
+
+
+
+```{r}
+#################
+#Prueba de Rachas: Pregunta 6
+#################
+library(tseries)
+me<-median(Caso$Concurrencia)
+x<-factor(Caso$Concurrencia>me)
+tseries::runs.test(x)
+library(fastGraph)
+shadeDist(qnorm(c(0.03/2,1-0.03/2)),"dnorm")
+```
+pvalor=0.2963 > alfa no se rechaza H0
+Conclusión
+A un nivel de significación de 0.03, no existe suficiente evidencia estadística para rechazar H0.
+Por lo tanto, no se puede afirmar que las observaciones no son aleatorias con respecto al número mediano de veces al mes que un cliente acude al restaurante
+
+
+
+7) Usted considera que un indicador importante para analizar la pérdida de clientes es la satisfacción de los clientes con respecto al trato del personal. Si la mediana de satisfacción fuera menor a 7 podría afirmarse que uno de los problemas de la pérdida de clientes radica en el trato por parte del personal de atención. ¿Qué podría informar a la gerencia sobre la calidad de atención que se está brindando a los clientes? 	
+También se desea reportar un intervalo del 97% de confianza para la mediana del grado de satisfacción de clientes.
+
+H0: As = 0
+
+H1: As ≠ 0
+
+alfa=0.03
+
+```{r}
+###############################
+#Prueba de Simetr?a: Pregunta 7
+################################
+plot(table(Caso$Satisfacción),col=4)
+library(lawstat)
+symmetry.test(Caso$Satisfacción,boot=F,option="CM")
+symmetry.test(Caso$Satisfacción,boot=F,option="M")
+symmetry.test(Caso$Satisfacción,boot=F,option="MGG")
+```
+
+H0: Me ≥ 7
+H1: Me < 7
+
+```{r}
+#Prueba de Signos y Wilcoxon: Pregunta 7
+
+###################
+#Prueba de Wilcoxon
+###################
+#Método exacto (Usar este!)
+library(exactRankTests)
+
+#wilcox.exact(resta$Satisfacción,mu=valor hipotético,alternative="ltipo de prueba")
+wilcox.exact(Caso$Satisfacción,mu=7,alternative="l")
+
+
+# Intervalo de confianza
+#Siempre: tipo de prueba ="t"
+wilcox.exact(Caso$Satisfacción,mu=7,alternative="t",
+             conf.int=T,conf.level=0.97)
+
+```
+V= 341 				Pvalor=0.01308<alfa se rechaza H0
+Conclusión
+A un nivel de significación de 0.03, existe suficiente evidencia estadística para rechazar H0.
+Por lo tanto, podemos afirmar que la puntuación mediana es menor a 7; es decir se puede afirmar que uno de los problemas de la pérdida de clientes radica en el trato por parte del personal de atención
+
+
+
+```{r}
+# Intervalo de confianza
+#Siempre: tipo de prueba ="t"
+wilcox.exact(Caso$Satisfacción,mu=7,alternative="t",
+             conf.int=T,conf.level=0.97)
+```
+
+IC(Me) = [5 ; 7]
+El intervalo que va de 5 a 7 brinda un 97% de confianza de contener a la puntuación mediana de satisfacción
+
+### PARA DETECTAR OUTLIERS
+
+8)	Ud. desea determinar si existe algún cliente que tiene un monto de gasto por consumo diferenciado en su última visita.
+
+
+H0: No existen personas con un gasto por consumo diferenciado
+
+H1: Existen personas con un gasto por consumo diferenciado
+
+
+alfa=0.03
+
+```{r}
+#########################
+#   Prueba de Grubbs
+#########################
+library(outliers)
+
+#Two.side=T: superior o inferior
+grubbs.test(Caso$Monto,type=10,two.sided=T)
+```
+
+
+Pvalor=0.3656 > alfa no se rechaza H0
+
+A un nivel de significación de 0.03, no existe suficiente evidencia estadística para rechazar H0.
+Por lo tanto, no podemos afirmar que existen personas con un gasto por consumo diferenciado.
