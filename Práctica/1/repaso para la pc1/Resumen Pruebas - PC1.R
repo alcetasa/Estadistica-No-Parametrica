@@ -137,7 +137,7 @@ jarque.test(estatura)
 #   Prueba de Rachas
 #########################
 library(tseries)
-runs.test(as.factor(primer$Gasto>100))
+tseries::runs.test(as.factor(primer$Gasto>100))
 
 
 #*c) Para evaluar simetría
@@ -216,4 +216,27 @@ library(outliers)
 
 #Two.side=T: superior o inferior
 grubbs.test(resta$Monto,type=10,two.sided=T)
+
+
+
+################################
+#Prueba de detecci?n de Outliers: Pregunta 8
+################################
+boxplot(resta$Monto,col=3)
+
+library(outliers)
+#Prueba de Grubbs
+grubbs.test(resta$Monto,two.sided = T)
+
+#Prueba de Dixon (menor a 30 datos )
+dixon.test(resta$Monto, type=22, two.sided=T)
+
+dixon.test(resta$Monto[1:25], type=22, two.sided=T)
+
+#Prueba de Rosner
+library(EnvStats)
+rosnerTest(Caso$Monto, k=1, alpha=0.03)
+
+
+
 

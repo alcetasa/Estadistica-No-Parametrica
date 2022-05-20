@@ -95,3 +95,5 @@ tabla1<-as.vector(tabla)
 multinomial.test(tabla1,prob)
 
 
+
+

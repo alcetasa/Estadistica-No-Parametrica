@@ -322,7 +322,9 @@ res4<-chisq.test(tabla3,p=proba)
 res4$expected # si tienen valores esperados menores a 5 se agrupan
 
 tabla4<-c(sum(tabla3[1:2]),tabla3[3:4],sum(tabla3[5:6]))
+tabla4
 proba4<-c(sum(proba[1:2]),proba[3:4],sum(proba[5:6]))
+proba4
 chisq.test(tabla4,p=proba4)
 
 qchisq(0.03,3,lower.tail = F)#alfa
@@ -367,8 +369,11 @@ library(fastGraph)
 shadeDist(qnorm(c(0.03/2,1-0.03/2)),"dnorm")
 ```
 pvalor=0.2963 > alfa no se rechaza H0
+
 Conclusión
+
 A un nivel de significación de 0.03, no existe suficiente evidencia estadística para rechazar H0.
+
 Por lo tanto, no se puede afirmar que las observaciones no son aleatorias con respecto al número mediano de veces al mes que un cliente acude al restaurante
 
 
@@ -393,12 +398,21 @@ symmetry.test(Caso$Satisfacción,boot=F,option="CM")
 symmetry.test(Caso$Satisfacción,boot=F,option="M")
 symmetry.test(Caso$Satisfacción,boot=F,option="MGG")
 ```
+MGG=1.1985		Pvalor=0.2307 >  no se rechaza H0
+
+Conclusión
+A un nivel de significación de 0.03. se cumple la simetría.
+
+
+###  Prueba de Signos y Wilcoxon: Pregunta 7
+
 
 H0: Me ≥ 7
+
 H1: Me < 7
 
 ```{r}
-#Prueba de Signos y Wilcoxon: Pregunta 7
+
 
 ###################
 #Prueba de Wilcoxon
@@ -416,8 +430,11 @@ wilcox.exact(Caso$Satisfacción,mu=7,alternative="t",
              conf.int=T,conf.level=0.97)
 
 ```
+
 V= 341 				Pvalor=0.01308<alfa se rechaza H0
+
 Conclusión
+
 A un nivel de significación de 0.03, existe suficiente evidencia estadística para rechazar H0.
 Por lo tanto, podemos afirmar que la puntuación mediana es menor a 7; es decir se puede afirmar que uno de los problemas de la pérdida de clientes radica en el trato por parte del personal de atención
 
@@ -433,9 +450,10 @@ wilcox.exact(Caso$Satisfacción,mu=7,alternative="t",
 IC(Me) = [5 ; 7]
 El intervalo que va de 5 a 7 brinda un 97% de confianza de contener a la puntuación mediana de satisfacción
 
+
 ### PARA DETECTAR OUTLIERS
 
-8)	Ud. desea determinar si existe algún cliente que tiene un monto de gasto por consumo diferenciado en su última visita.
+**8)	Ud. desea determinar si existe algún cliente que tiene un monto de gasto por consumo diferenciado en su última visita.**
 
 
 H0: No existen personas con un gasto por consumo diferenciado
