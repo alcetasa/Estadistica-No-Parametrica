@@ -1,0 +1,13 @@
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+getwd()
+
+Lectur xlsx
+
+library("readxl")
+caso<- read_excel("Caso 1.xlsx")
+
+Lectura txt
+data <- read.table(file = "mi_archivo.txt", header = TRUE)
+
+Lectura csv
+papa <- read.csv("caso_2.csv")

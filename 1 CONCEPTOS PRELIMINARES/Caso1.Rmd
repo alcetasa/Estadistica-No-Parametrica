@@ -40,8 +40,9 @@ Para su análisis aplicó una encuesta a una muestra aleatoria de 50 clientes fr
 
 
 En función a la encuesta, Ud. debe trabajar con las variables adecuadas, para el desarrollo de las siguientes inquietudes y sus conclusiones serán a un nivel de significación de 0.03: 
-1)	Al gerente le interesa analizar la **proporción de alta fidelidad**, el gerente del R&Dgo Restaurant informa que **la proporción de clientes con alta fidelidad siempre ha sido mayor a 0.4**, (la alta fidelidad del cliente se mide si este acude al restaurante como mínimo 6 veces al mes). ¿Qué puede afirmar sobre la **alta fidelidad de los clientes**? 
-También se desea reportar un intervalo del 97% de confianza para la proporción de clientes con alta fidelidad.
+
+**1)	Al gerente le interesa analizar la proporción de alta fidelidad, el gerente del R&Dgo Restaurant informa que  la proporción de clientes con alta fidelidad siempre ha sido mayor a 0.4 , (la alta fidelidad del cliente se mide si este acude al restaurante como mínimo 6 veces al mes). ¿Qué puede afirmar sobre la ****alta fidelidad de los clientes?**
+**También se desea reportar un intervalo del 97% de confianza para la proporción de clientes con alta fidelidad**
 
 
 ## Prueba Binomial
@@ -102,11 +103,11 @@ El intervalo que va de 0.247 a 0.528 brinda un 97% de confianza de contener a la
 ## Prueba para evaluar supuestos Pruebas para determinar la distribución de los datos (Pruebas de Bondad de Ajuste)
 
 
-2) Es importante analizar el comportamiento del consumo de los clientes.
-El gerente afirma que el monto gastado en la última visita **no presenta un comportamiento uniforme**, pero que quizás pueda ser normal; Ud. afirma lo contrario al gerente.
+**2) Es importante analizar el comportamiento del consumo de los clientes.**
+**El gerente afirma que el monto gastado en la última visita no presenta un comportamiento uniforme,pero que quizás pueda ser normal; Ud. afirma lo contrario al gerente**
 
-a) Use una prueba de bondad de ajuste.
-a.1 Use una prueba basada en la comparación de la distribución empírica y teórica para verificar la afirmación del gerente. Realice una gráfica adecuada previamente.
+**a) Use una prueba de bondad de ajuste.**
+**a.1 Use una prueba basada en la comparación de la distribución empírica y teórica para verificar la afirmación del gerente. Realice una gráfica adecuada previamente**
 
 ### Prueba de Kolmogorov-Smirnov
 ```{r}
@@ -141,7 +142,7 @@ Por lo tanto, la afirmación del gerente es correcta.
 
 
 
-a.2 Use una prueba que **basa su estadístico en el logaritmo de la distribución acumulada teórica** para verificar la afirmación del gerente. Realice una gráfica adecuada previamente. Anteponga set.seed(30)
+**a.2 Use una prueba que ****basa su estadístico en el logaritmo de la distribución acumulada teórica** **para verificar la afirmación del gerente. Realice una gráfica adecuada previamente. Anteponga set.seed(30)**
 
 
 H0: El monto gastado en la última visita presenta un comportamiento uniforme
@@ -216,8 +217,8 @@ lillie.test(Caso$Monto)
 ```
 
 
-b) Use una prueba cuyo estadístico se basa en la asimetría y curtosis para verificar su afirmación. Realice una gráfica adecuada previamente.
-¿Quién tiene razón?
+**b) Use una prueba cuyo estadístico se basa en la asimetría y curtosis para verificar su afirmación. Realice una gráfica adecuada previamente.**
+**¿Quién tiene razón?**
 
 H0: El monto gastado en la última visita presenta un comportamiento normal
 
@@ -247,7 +248,7 @@ El estudiante es quien tiene razón.
 
 ###  Prueba Chi Cuadrado de Pearson: Ajuste a la multinomial
 
-3)	La gerencia quiere determinar si la preferencia por los tipos de menú no está en relación 2:3:4:1
+**3)	La gerencia quiere determinar si la preferencia por los tipos de menú no está en relación 2:3:4:1**
 
 H0: La preferencia por los tipos de menú está en relación 2:3:4:1
 
@@ -279,7 +280,7 @@ Por lo tanto, podemos afirmar que la preferencia por los tipos de menú no está
 
 
 
-4)	La gerencia informa que tradicionalmente hay 4 platos que siempre se han vendido por igual y que son muy requeridos por los clientes. Si hay un plato de mayor preferencia se podría hacer variantes de ese plato. ¿Se deben hacer variantes de un plato?  Adicionalmente en su informe debe elaborar un gráfico adecuado.	
+**4)	La gerencia informa que tradicionalmente hay 4 platos que siempre se han vendido por igual y que son muy requeridos por los clientes. Si hay un plato de mayor preferencia se podría hacer variantes de ese plato. ¿Se deben hacer variantes de un plato?  Adicionalmente en su informe debe elaborar un gráfico adecuado.	**
 
 ```{r}
 #########################################################
@@ -297,7 +298,8 @@ multinomial.test(tabla1,prob)
 
 ### Prueba Chi Cuadrado de Pearson-Ajuste a una distribuci?n te?rica: Pregunta 5
 
-5)	Una estrategia para captar más clientes es ofrecerles postres gratuitos al finalizar su almuerzo. Pero para no desgastar el paladar de los clientes, **el gerente considera que debe ofrecerse como máximo 5 postres al mes que visite el restaurante**.
+**5)	Una estrategia para captar más clientes es ofrecerles postres gratuitos al finalizar su almuerzo. Pero para no desgastar el paladar de los clientes,el gerente considera que debe ofrecerse como máximo 5 postres al mes que visite el restaurante**.
+
 Ud. le propone al gerente determinar la distribución del número de postres que el cliente estaría dispuesto a consumir al mes sabiendo que la probabilidad de que un cliente esté dispuesto a consumir un postre es igual a 0.5.
 
 ¿El número de postres que el cliente estaría dispuesto a consumir al mes no se ajusta a una distribución Binomial? Elabore un gráfico adecuado.
@@ -343,7 +345,7 @@ Por lo tanto, podemos afirmar que el número de postres que el cliente estaría 
 
 
 
-6)	Al analizar la fidelidad de los clientes, usted quiere asegurarse que sus resultados son confiables y representativos, para ello sabe que el tipo de muestreo y la elección aleatoria de sus datos es muy importante. ¿Podría concluir que, con la elección de sus datos, su investigación y resultados sobre R&Dgo Restaurant son confiables y válidos en base al número mediano de veces al mes que un cliente acude al restaurante?	
+**6)	Al analizar la fidelidad de los clientes, usted quiere asegurarse que sus resultados son confiables y representativos, para ello sabe que el tipo de muestreo y la elección aleatoria de sus datos es muy importante. ¿Podría concluir que, con la elección de sus datos, su investigación y resultados sobre R&Dgo Restaurant son confiables y válidos en base al número mediano de veces al mes que un cliente acude al restaurante?	**
 
 
 H0: Las observaciones son aleatorias con respecto al número mediano de veces al mes que un cliente acude al restaurante
@@ -371,7 +373,8 @@ Por lo tanto, no se puede afirmar que las observaciones no son aleatorias con re
 
 
 
-7) Usted considera que un indicador importante para analizar la pérdida de clientes es la satisfacción de los clientes con respecto al trato del personal. Si la mediana de satisfacción fuera menor a 7 podría afirmarse que uno de los problemas de la pérdida de clientes radica en el trato por parte del personal de atención. ¿Qué podría informar a la gerencia sobre la calidad de atención que se está brindando a los clientes? 	
+**7) Usted considera que un indicador importante para analizar la pérdida de clientes es la satisfacción de los clientes con respecto al trato del personal. Si la mediana de satisfacción fuera menor a 7 podría afirmarse que uno de los problemas de la pérdida de clientes radica en el trato por parte del personal de atención. ¿Qué podría informar a la gerencia sobre la calidad de atención que se está brindando a los clientes? **
+
 También se desea reportar un intervalo del 97% de confianza para la mediana del grado de satisfacción de clientes.
 
 H0: As = 0
